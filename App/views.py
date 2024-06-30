@@ -66,7 +66,7 @@ def get_times_for_date(request,id_room,date_select):
     # получение объекта даты после проверок
     date_booking_object = DateBookingRoom.objects.get(room_fk=room_object, date=date_select)
     # получение времени по всем правилам
-    times_rooming = TimesBooking.objects.filter(user_fk=request.user, date_fk=date_booking_object).values('id',
+    times_rooming = TimesBooking.objects.filter(date_fk=date_booking_object).values('id',
                                                                                                           'time_start_booking',
                                                                                                           'time_finish_booking',
                                                                                                           'description_booking')

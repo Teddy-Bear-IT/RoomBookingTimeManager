@@ -246,6 +246,8 @@
                      time_start_booking : new Date("1930-01-01T"+item.time_start_booking) ,
                      time_finish_booking : new Date("1930-01-01T"+item.time_finish_booking) ,
                      description_booking : item.description_booking ,
+                      last_name: item.last_name,
+                      first_name:item.first_name,
                   }));
 
                   document.getElementById('timetable_col_0').innerHTML = "";
@@ -272,7 +274,7 @@
               for (let i = 0; i < this.tasks.length; i++) {
                 let task_copy = this.tasks[i]
                 console.log("задача - ", task_copy)
-                document.getElementById('timetable_col_0').innerHTML += this.createTaskHTML(task_copy.id, task_copy.time_start_booking, task_copy.time_finish_booking, task_copy.description_booking);
+                document.getElementById('timetable_col_0').innerHTML += this.createTaskHTML(task_copy.id, task_copy.time_start_booking, task_copy.time_finish_booking, task_copy.description_booking,task_copy.last_name,task_copy.first_name);
                 this.moveTaskVerticallyToItsPlace(task_copy.id, task_copy.time_start_booking, 8)
                 this.resizeTaskProperly(task_copy.id, task_copy.time_start_booking, task_copy.time_finish_booking)
               }
@@ -310,7 +312,9 @@
                        id:item.id,
                        time_start_booking : new Date("1930-01-01T"+item.time_start_booking) ,
                        time_finish_booking : new Date("1930-01-01T"+item.time_finish_booking) ,
-                         description_booking : item.description_booking ,
+                        description_booking : item.description_booking ,
+                      last_name: item.last_name,
+                      first_name:item.first_name,
                     }));
                   document.getElementById('timetable_col_0').innerHTML = "";
                   this.updateTimetable()
@@ -328,7 +332,7 @@
             two_digits(s){
               return String(s).padStart(2,'0')
             },
-            createTaskHTML(id, time_start_booking, time_finish_booking, description_booking){
+            createTaskHTML(id, time_start_booking, time_finish_booking, description_booking, last_name,first_name){
               console.log("пришло - ", description_booking)
               let start_title = `${this.two_digits(time_start_booking.getHours())}:${this.two_digits(time_start_booking.getMinutes())}`
               let end_title = `${this.two_digits(time_finish_booking.getHours())}:${this.two_digits(time_finish_booking.getMinutes())}`
@@ -336,7 +340,7 @@
                   <div class="usual-task" id="${id}">
                         <div class="usual-task__header">
                           <p class="usual-task__timerange">${start_title} - ${end_title}</p>
-                          <p class="usual-task__author">{{user.last_name}} {{user.first_name}}</p>
+                          <p class="usual-task__author">${last_name} ${first_name}</p>
                         </div>
                         <div class="usual-task__content">
                           <p>

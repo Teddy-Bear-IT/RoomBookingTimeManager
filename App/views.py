@@ -10,7 +10,7 @@ from django.urls import reverse
 
 #import your forms here
 from .forms import UserLoginForm
-
+from django.contrib.auth.models import User
 
 # import your model here.
 from .models import Rooms, DateBookingRoom,TimesBooking
@@ -69,7 +69,13 @@ def get_times_for_date(request,id_room,date_select):
     times_rooming = TimesBooking.objects.filter(date_fk=date_booking_object).values('id',
                                                                                                           'time_start_booking',
                                                                                                           'time_finish_booking',
-                                                                                                          'description_booking')
+                                                                                                          'description_booking',
+                                                                                    'user_fk')
+    for time_item in times_rooming:
+        time_item['last_name'] = User.objects.get(id=time_item['user_fk']).last_name
+        time_item['first_name'] = User.objects.get(id=time_item['user_fk']).first_name
+        time_item.pop('user_fk')
+        print(time_item)
     print("Отдаю - ", list(times_rooming))
     return JsonResponse(list(times_rooming), safe=False)
 def booking_time(request):

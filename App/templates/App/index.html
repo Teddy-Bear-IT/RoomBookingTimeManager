@@ -1,0 +1,406 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meeting Room Booking</title>
+    <link rel="stylesheet" href="{% static 'css/index_style.css' %}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+  </head>
+  <body>
+    <div class="container">
+     <div class="container_top-content">
+        <h1>{{user.last_name}} {{user.first_name}}</h1>
+        <a href="{% url 'App:logout' %}" class="container_button-logout">Выйти</a>
+     </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Search" />
+      </div>
+      <div class="room-list">
+        {% for book_room in all_booking %}
+          <div
+          class="room-card"
+          style="
+            background-image: url('../static/img/image_room.jpg');
+            background-size: cover;
+          "
+        >
+          <div class="obertka">
+            <h3 class="room-name">Комната {{book_room.number_room}}</h3>
+<!--            <p class="room-status">Статус: {% if not book_room.status_booking %} Свободна {% else %} <span style="color:red">Занята</span> {% endif %}</p>-->
+            <button class="book-button" data-id="{{forloop.counter0}}" data-room="{{book_room.id}}">BOOK NOW</button>
+          </div>
+        </div>
+
+        {% endfor %}
+
+      </div>
+    </div>
+     <div  class="modal" id="app">
+          <div class="modal-content">
+         <span class="close" data-id="{{forloop.counter0}}">&times;</span>
+        <div class="table-container">
+          <div class="container-main" id="container">
+            <table class="timetable" id="timetable">
+              <tr class="timetable_heading">
+                <th id="timetable_top_left_cell">
+                  <div
+                    class="date_picker_for_change_date"
+                    data-title="Выбор даты начала недели."
+                  >
+                    <span class="datepicker-toggle">
+                      <span class="datepicker-toggle-button"></span>
+                      <input type="date" class="datepicker-input" v-model="current_select_data" />
+                    </span>
+                  </div>
+                </th>
+                <th class="cell_first_main_block">
+                  <div class="first_cell_inner_wrapper">
+                    <div class="first_cell_block">
+                      <p
+                        class="timetable_heading_daynumber"
+                        id="col_0_daynumber"
+                      >
+                        [[get_current_date]]
+                      </p>
+<!--                      <p class="timetable_heading_dayname" id="col_0_daytitle">-->
+<!--                        Ср-->
+<!--                      </p>-->
+                    </div>
+                  </div>
+                </th>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">8:00</td>
+                <td id="timetable_col_0"></td>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">9:00</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">10:00</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">11:00</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">12:00</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">13:00</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">14:00</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">15:00</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">16:00</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">17:00</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">18:00</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="timetable_timestamp">19:00</td>
+                <td></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="booking-form">
+          <form @submit.prevent >
+            {% csrf_token %}
+             <div class="booking-form">
+      <div class="form-group">
+        <label for="bookingTimeStart" class="form-label">c</label>
+        <input
+          type="time"
+          id="bookingTimeStart"
+          class="form-input"
+          v-model="select_time_start_booking"
+        />
+      </div>
+      <div class="form-group">
+        <label for="bookingTimeFinish" class="form-label">по</label>
+        <input
+          type="time"
+          id="bookingTimeFinish"
+          class="form-input"
+          name="bookingTime"
+          v-model="select_time_finish_booking"
+        />
+      </div>
+       <div class="form-group">
+        <label for="descriptionBooking" class="form-label">Описание</label>
+        <input
+          type="text"
+          id="descriptionBooking"
+          class="form-input"
+          name="descriptionBookingTime"
+          v-model="description_booking"
+        />
+      </div>
+      <button
+        id="bookButton"
+        type="button"
+        class="book-button"
+        @click="book_time"
+      >
+        Забронировать
+      </button>
+    </div>
+          </form>
+        </div>
+      </div>
+           <div class="modal-alert-overlay-alert" v-if="is_open_alert">
+          <div class="modal-alert">
+            <div
+              class="modal-alert-header"
+              :class="['modela-alert-header',{'modal-alert-header_succes':type_alert==1,'modal-alert-header_error':type_alert==0,'modal-alert-header_warning':type_alert==2}]"
+            >
+              <h2>[[title_user_alert]]</h2>
+            </div>
+            <div class="modal-alert-body">
+              <p>[[context_user_alert]]</p>
+            </div>
+            <div class="modal-alert-footer">
+              <button
+                class="btn-alert btn-alert-secondary"
+                @click="swap_view_alert"
+              >
+                Закрыть
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <style id="stylesFor1DayView"></style>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <script>
+
+      //let jsVariable = jsVariableData;
+
+        const app = Vue.createApp({
+          data: () => ({
+            tasks: [],
+            selected_period_starting_date:  new Date().toLocaleDateString(),
+            id_current_room:'',
+            select_time_start_booking:'',
+            select_time_finish_booking:'',
+            current_select_data:  new Date().toISOString().split('T')[0],
+            description_booking  : '',
+
+
+              title_user_alert: "Молодец!",
+              context_user_alert: "Описание!",
+              is_open_alert: false,
+              type_alert: 2, // 0 - ошибка, 1 - успешно, 2 - предупреждение
+          }),
+        delimiters:['[[',']]'],
+          methods: {
+            LoadTimesForRoom(id_room){
+              if (!id_room){
+                id_room = this.id_current_room
+              }else{
+                this.id_current_room = id_room
+              }
+              //let id_room = this.id_current_room
+              let date_select = new Date().toLocaleDateString()
+              if( this.current_select_data){
+                date_select = this.current_select_data
+              }
+              fetch('/get_times_for_room/'+id_room+'/'+date_select)
+              .then(response => response.json())
+              .then(data => {
+                  this.tasks = data.map(item=>({
+                     id:item.id,
+                     time_start_booking : new Date("1930-01-01T"+item.time_start_booking) ,
+                     time_finish_booking : new Date("1930-01-01T"+item.time_finish_booking) ,
+                     description_booking : item.description_booking ,
+                  }));
+
+                  document.getElementById('timetable_col_0').innerHTML = "";
+                  this.updateTimetable()
+              });
+            },
+            updateTimetable(){
+            //  document.getElementById('stylesFor1DayView').innerHTML = `
+            //     td:nth-child(3), th:nth-child(3),
+            //     td:nth-child(4), th:nth-child(4),
+            //     td:nth-child(5), th:nth-child(5),
+            //     td:nth-child(6), th:nth-child(6),
+            //     td:nth-child(7), th:nth-child(7),
+            //     td:nth-child(8), th:nth-child(8),
+            //     td:nth-child(2), th:nth-child(2) {
+            //       width: 87.5%;
+            //     }
+            //     .usual-task {
+            //       width: 43vw;
+            //       margin-left: 0;
+            //     }
+            // `;
+              // итерируем через задачи
+              for (let i = 0; i < this.tasks.length; i++) {
+                let task_copy = this.tasks[i]
+                console.log("задача - ", task_copy)
+                document.getElementById('timetable_col_0').innerHTML += this.createTaskHTML(task_copy.id, task_copy.time_start_booking, task_copy.time_finish_booking, task_copy.description_booking);
+                this.moveTaskVerticallyToItsPlace(task_copy.id, task_copy.time_start_booking, 8)
+                this.resizeTaskProperly(task_copy.id, task_copy.time_start_booking, task_copy.time_finish_booking)
+              }
+              console.log("айди в конце апдейт - ", this.current_select_data)
+            },
+            book_time(){
+              //fdsfsdfsd
+              if ( !this.current_select_data || !this.select_time_start_booking || !this.select_time_finish_booking || !this.description_booking){
+                this.swap_view_alert("Предупреждение",'Для бронировани необходимо заполнить все поля!',2)
+                return
+              }
+             let request = new XMLHttpRequest()
+              request.open(
+                  method="POST",
+                  url="/booking_time/",
+                  async=true
+              )
+              // Получаем CSRF-токен
+              let csrftoken = Cookies.get('csrftoken')
+              // Устанавливаем "заголовок" запроса -- просто передаём сопроводительные данные
+              request.setRequestHeader("X-CSRFToken", csrftoken)
+              request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+              request.onload =  () =>
+              {
+                  let responseJSON = JSON.parse(request.response)
+                  console.log('пршло - ', responseJSON)
+                console.log("f -", responseJSON.status)
+                console.log('s - ', responseJSON.data)
+                  if(responseJSON.status=="200"){
+                    this.swap_view_alert('Успешно!','Переговорная забронирована!',1)
+                  }else{
+                    this.swap_view_alert("Увы:!",'Не получилось забронировать время( Скорее всего его уже кто-то занял',0)
+                  }
+                  this.tasks = responseJSON.data.map(item=>({
+                       id:item.id,
+                       time_start_booking : new Date("1930-01-01T"+item.time_start_booking) ,
+                       time_finish_booking : new Date("1930-01-01T"+item.time_finish_booking) ,
+                         description_booking : item.description_booking ,
+                    }));
+                  document.getElementById('timetable_col_0').innerHTML = "";
+                  this.updateTimetable()
+              }
+
+              const params = new URLSearchParams();
+              params.append('id_room', this.id_current_room);
+              params.append('time_start_booking', this.select_time_start_booking);
+              params.append('time_finish_booking', this.select_time_finish_booking);
+              params.append('date_booking', this.current_select_data);
+              params.append('description_booking', this.description_booking);
+              // Надо послать запрос со значением
+              request.send(params.toString())
+            },
+            two_digits(s){
+              return String(s).padStart(2,'0')
+            },
+            createTaskHTML(id, time_start_booking, time_finish_booking, description_booking){
+              console.log("пришло - ", description_booking)
+              let start_title = `${this.two_digits(time_start_booking.getHours())}:${this.two_digits(time_start_booking.getMinutes())}`
+              let end_title = `${this.two_digits(time_finish_booking.getHours())}:${this.two_digits(time_finish_booking.getMinutes())}`
+              return `
+                  <div class="usual-task" id="${id}">
+                        <div class="usual-task__header">
+                          <p class="usual-task__timerange">${start_title} - ${end_title}</p>
+                          <p class="usual-task__author">{{user.last_name}} {{user.first_name}}</p>
+                        </div>
+                        <div class="usual-task__content">
+                          <p>
+                            ${description_booking}
+                          </p>
+                        </div>
+                      </div>
+              `;
+            },
+            moveTaskVerticallyToItsPlace(task_id, task_time_start_booking, starting_hours_of_timetable /*это минимально возможные часы, с которых начинается расписание, например, 8*/) {
+              document.getElementById(task_id).style.top = `${(task_time_start_booking.getHours()*60+task_time_start_booking.getMinutes() - (starting_hours_of_timetable*60))/60 * 100}px`;
+            },
+            resizeTaskProperly(task_id, task_time_start_booking, task_time_finish_booking){
+               let start_in_hours = task_time_start_booking.getHours() + task_time_start_booking.getMinutes() / 60
+                let end_in_hours = task_time_finish_booking.getHours() + task_time_finish_booking.getMinutes() / 60;
+                document.getElementById(task_id).style.height = `${100 * (end_in_hours - start_in_hours)}px`;
+            },
+            swap_view_alert(title_alert,context_alert,type_alert) {
+              this.title_user_alert = title_alert;
+              this.context_user_alert = context_alert;
+              this.type_alert = type_alert
+              this.is_open_alert = !this.is_open_alert;
+
+
+             if(type_alert==1){
+                this.select_time_start_booking = ''
+                this.select_time_finish_booking = ''
+                this.description_booking =''
+             }
+            },
+          },
+        watch:{
+          current_select_data(){
+                this.LoadTimesForRoom(this.id_current_room)
+          }
+        },
+        computed:{
+              get_current_date(){
+                  return this.current_select_data
+              }
+        }
+
+        })
+        const v = app.mount('#app');
+
+
+      // Код для кнопок открытия модальных окон
+      document.querySelectorAll(".book-button").forEach((button) => {
+        button.addEventListener("click", function(event) {
+          document.querySelector(".modal").style.display = "flex";
+          document.body.style.overflow = "hidden"; // Предотвращает прокрутку фона
+          v.LoadTimesForRoom(event.target.dataset.room);
+        });
+      });
+      // Код закрытия модального окна
+      document.querySelectorAll(".close").forEach((button) => {
+        button.addEventListener("click", function(event) {
+          document.querySelector(".modal").style.display = "none";
+          document.body.style.overflow = "auto"; // Предотвращает прокрутку фона
+          document.querySelector('#timetable_col_0').innerHTML = ''
+        });
+      })
+
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,482 @@
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #252525;
+    background-image: url("../img/bg_index.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    position:relative;
+  }
+  .container {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+    width: 1100px;
+    height: 80vh;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+  .search-bar {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .search-bar input {
+    background: transparent;
+    border: none;
+    color: white;
+    width: 100%;
+    padding: 5px;
+    outline: none;
+  }
+  .search-bar input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .room-list {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding-right: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+}
+  .room-card {
+    background-color: white;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    width: 450px;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .room-image {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 480px;
+    height: 480px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+  }
+  .obertka {
+    background-color: #252525; /*  Создаем полупрозрачный черный фон  */
+    border-radius: 10px;
+    padding: 40px;
+  }
+  .room-status {
+    color: #4caf50;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .book-button {
+    background: linear-gradient(to right, #8e2de2, #4a00e0);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+/* New */
+.container-main {
+  width: 100%;
+  height: 90%;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.table-container {
+  height: 90%;
+}
+
+.timetable {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+.timetable,
+td,
+th {
+  border: 1px solid rgba(208, 222, 245, 1);
+}
+
+.timetable_timestamp {
+  background: none;
+  width: 80px;
+  text-align: center;
+  border: none;
+  position: sticky;
+  left: 0;
+  z-index: 100;
+  background-color: white;
+
+  vertical-align: top;
+}
+
+#timetable_col_0{
+  position: relative;
+}
+.timetable_heading {
+  height: 60px;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 110;
+}
+
+.timetable_heading th {
+  padding: 10px;
+}
+
+.cell_first_main_block {
+  min-width: 100px;
+}
+
+.first_cell_inner_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.timetable_heading_dayname {
+  font-weight: normal;
+  font-size: 12px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 95%;
+  height: 90%;
+  position: relative;
+  overflow: hidden;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+
+
+td {
+  background: rgba(233, 241, 255, 1);
+  min-width: 100px;
+}
+
+tr {
+  height: 100px;
+}
+
+#timetable_top_left_cell {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 120;
+  background-color: white;
+}
+
+.booking-form {
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.bookingTime {
+  padding: 5px;
+  font-size: 16px;
+}
+
+#bookButton {
+  padding: 5px 15px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#bookButton:hover {
+  background-color: #45a049;
+}
+
+
+
+.datepicker-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        box-sizing: border-box;
+        opacity: 0;
+  }
+  .datepicker-input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+   width: 50px;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+  .datepicker-toggle {
+    display: inline-block;
+    position: relative;
+    width: 50px;
+    height: 50px;
+  }
+  .datepicker-toggle-button {
+    position: absolute;
+    left: 0;
+    top: 0;
+   width: 50px;
+    height: 50px;
+    background-image: url("../img/calendar-icon.svg");
+    background-size: cover;
+    z-index: -1000;
+  }
+
+
+
+  .booking-form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background-color: #f5f5f5;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-group {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .form-label {
+        font-weight: bold;
+        color: #333;
+      }
+
+      .form-input {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-input:focus {
+        border-color: #007bff;
+      }
+
+      .book-button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .book-button:hover {
+        background-color: #0056b3;
+      }
+
+
+      .room-name{
+        color:white;
+        text-align: center;
+      }
+
+
+
+      .usual-task {
+        position: absolute;
+        background-color: #007bff;
+        border-radius: 8px;
+        background: linear-gradient(to right, #8e2de2, #4a00e0);
+        width: 60%;
+        height: 100px;
+        overflow-y: scroll; /* Добавляет вертикальный скролл при необходимости */
+      }
+
+      .usual-task__header {
+        background-color: #f0f0f0;
+        padding: 8px 12px;
+        display: flex;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .usual-task__timerange,
+      .usual-task__author {
+        margin: 0;
+        font-size: 14px;
+        font-weight: bold;
+        font-size: 20px;
+      }
+
+      .usual-task__content {
+        padding: 12px;
+        color: white;
+        font-weight: 500px;
+      }
+
+      .modal-alert-overlay-alert {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+          z-index:1500;
+      }
+
+      .modal-alert {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 400px;
+        transform: scale(0.8);
+      }
+
+      .modal-alert-overlay-alert.active .modal-alert {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      .modal-alert-header {
+        color: white;
+        padding: 15px 20px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+      .modal-alert-header_succes {
+        background-color: #4caf50;
+      }
+      .modal-alert-header_error {
+        background-color: red;
+      }
+      .modal-alert-header_warning {
+        background-color: rgba(255, 191, 0, 0.9);
+      }
+
+      .modal-alert-header h2 {
+        margin: 0;
+        font-size: 1.4em;
+      }
+
+      .modal-alert-body {
+        padding: 20px;
+      }
+
+      .modal-alert-footer {
+        padding: 15px 20px;
+        text-align: right;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      .btn-alert {
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-alert-primary {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .btn-alert-primary:hover {
+        background-color: #45a049;
+      }
+
+      .btn-alert-secondary {
+        background-color: #f1f1f1;
+        color: #333;
+        margin-right: 10px;
+      }
+
+      .btn-alert-secondary:hover {
+        background-color: #e0e0e0;
+      }
+
+.container_top-content{
+    display: flex;
+    gap:20px;
+    align-items: center;
+}
+.container_button-logout{
+    background: linear-gradient(to right, #8e2de2, #4a00e0);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 60px;
+    text-align: center;
+    text-decoration: none;
+}
